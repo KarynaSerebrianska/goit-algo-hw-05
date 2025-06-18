@@ -1,27 +1,19 @@
-def caching_fibonacci(n):
+def caching_fibonacci():
+    
     cache = {}
 
     def fibonacci(n):
-        if n in cache <= 0:
+        if n <= 0:
             return 0
-        elif n in cache == 1:
+        if n == 1:
             return 1
-        elif n in cache:
+        if n in cache:
             return cache[n]
-
-        result = fibonacci(n - 1) + fibonacci(n - 2)
-        cache[n] = result
-        return result
+        #Якщо в кещі нема    
+        cache[n] = fibonacci(n - 1) + fibonacci(n - 2)
+        return cache[n]
+    return fibonacci    
     
-
-    return fibonacci
-    
-n= 5
-print(caching_fibonacci)
-
-#caching_fibonacci()
-
-
-
-fib = caching_fibonacci
-cache = {},
+fib = caching_fibonacci()
+print(fib(10))  # Виведе 55
+print(fib(15))  # Виведе 610
