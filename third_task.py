@@ -1,6 +1,8 @@
 import sys
 from collections import defaultdict
 
+from colorama import init, Fore, Style
+
 
 #Скрипт має зчитувати і аналізувати лог-файл, підраховуючи кількість записів для кожного рівня логування (INFO, ERROR, DEBUG, WARNING).
 
@@ -44,11 +46,23 @@ def count_logs_by_level(logs: list) -> dict:
 
 #Результати мають бути представлені у вигляді таблиці з кількістю записів для кожного рівня. + приймає результати виконання функції count_logs_by_level.
 def display_log_counts(counts: dict):    #Функція, яка виводить підраховану статистику в гарному вигляді.
-    print('\nLog Level Sum: ') 
-    print('-----')
-    for level in ['INFO', 'ERROR', 'DEBUG', 'WARNING']:    #Виводимо кожен рівень у фіксованому порядку (навіть якщо він не зустрічався в логах — тоді буде 0).
-        print(f"{level}: {counts.get(level, 0)}")
+    print("\nРівень логування | Кількість")
+    print("------------------|----------")
+    for level in ["INFO", "DEBUG", "ERROR", "WARNING"]:
+        count = counts.get(level, 0)
 
+        if level == "ERROR":
+            level_display = Fore.MAGENTA + level + Style.RESET_ALL
+        else:
+            level_display = level
+
+        print(f"{level_display:<18}| {count}")
+
+def display_filtered_logs(logs: list, level: str):
+    print(f"\nДеталі логів для рівня '{level.upper()}':")
+    for log in logs:
+        date_colored = Fore.GREEN + log["date"] + Style.RESET_ALL
+        print(f"{date_colored} {log['time']} - {log['message']}")
 
 #main
 
@@ -64,6 +78,7 @@ def main():
 
     if filter_level:
         filtered_logs = filter_logs_by_level(logs, filter_level)
+        display_filtered_logs(filtered_logs, filter_level)
 
 
 #Виводимо відібрані рядки в гарному форматі.
